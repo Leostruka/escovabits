@@ -1,11 +1,16 @@
 <%= form_with url: "/compile", method: :post, data: { controller: "compiler" } do |form| %>
   <div class="flex h-screen bg-gray-800 text-white">
     <div class="w-1/2 p-4 flex flex-col">
-      <h2 class="text-lg font-bold mb-2">Código Fonte</h2>
+      <h2 class="text-lg font-bold mb-2 flex justify-between items-center">
+        <span>Código Fonte</span>
+        <button type="button" class="text-sm bg-blue-600 hover:bg-blue-500 rounded px-2 py-1" data-action="click->compiler#shareCode" data-compiler-target="shareButton">
+          Compartilhar
+        </button>
+      </h2>
 
       <div class="flex items-center space-x-4 mb-2">
-        <%= form.select :language, ['cpp', 'go'], {}, { class: "bg-gray-700 rounded p-2", name: "language", data: { action: "change->compiler#changeLanguage", "compiler-target": "languageSelect" } } %>
-        <%= form.text_field :compiler_flags, placeholder: "Flags de compilação (ex: -O2)", class: "bg-gray-700 rounded p-2 w-full", name: "compiler_flags", data: { action: "input->compiler#startDebouncedCompile", "compiler-target": "compilerFlags" } %>
+        <%= form.select :language, ['cpp', 'go'], { selected: @language }, { class: "bg-gray-700 rounded p-2", name: "language", data: { action: "change->compiler#changeLanguage", "compiler-target": "languageSelect" } } %>
+        <%= form.text_field :compiler_flags, value: @compiler_flags, placeholder: "Flags de compilação (ex: -O2)", class: "bg-gray-700 rounded p-2 w-full", name: "compiler_flags", data: { action: "input->compiler#startDebouncedCompile", "compiler-target": "compilerFlags" } %>
       </div>
 
       <div class="relative w-full h-full">

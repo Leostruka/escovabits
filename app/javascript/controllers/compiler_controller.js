@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["source", "output", "languageSelect", "countdown", "sourceLineNumbers", "outputLineNumbers", "compilerFlags"]
+  static targets = ["source", "output", "languageSelect", "countdown", "sourceLineNumbers", "outputLineNumbers", "compilerFlags", "shareButton"]
 
   connect() {
     this.compileTimeout = null
@@ -69,6 +69,47 @@ export default class extends Controller {
       const originalText = button.textContent
       button.textContent = "Copiado!"
       setTimeout(() => { button.textContent = originalText }, 2000)
+    }
+  }
+
+  async shareCode(event) {
+    const originalText = this.shareButtonTarget.textContent
+    this.shareButtonTarget.textContent = "Salvando..."
+    this.shareButtonTarget.disabled = true
+
+    try {
+      const formData = new FormData()
+      formData.append("source_code", this.sourceTarget.value)
+      formData.append("language", this.languageSelectTarget.value)
+      formData.append("compiler_flags", this.compilerFlagsTarget.value)
+      
+      const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content
+
+      const response = await fetch("/share", {
+        method: "POST",
+        headers: {
+          "X-CSRF-Token": csrfToken
+        },
+        body: formData
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        const fullUrl = window.location.origin + data.url
+        await navigator.clipboard.writeText(fullUrl)
+        window.history.pushState({}, "", data.url)
+        this.shareButtonTarget.textContent = "Link Copiado!"
+      } else {
+        this.shareButtonTarget.textContent = "Erro!"
+      }
+    } catch (e) {
+      console.error("Erro ao compartilhar:", e)
+      this.shareButtonTarget.textContent = "Erro!"
+    } finally {
+      setTimeout(() => {
+        this.shareButtonTarget.textContent = "Compartilhar"
+        this.shareButtonTarget.disabled = false
+      }, 3000)
     }
   }
 

@@ -4,7 +4,9 @@ require "shellwords"
 
 class CompilerController < ApplicationController
   def index
-    @source_code = LanguageConfigService.hello_world_for("cpp")
+    @language ||= "cpp"
+    @compiler_flags ||= ""
+    @source_code ||= LanguageConfigService.hello_world_for(@language)
   end
 
   def compile
@@ -32,6 +34,23 @@ class CompilerController < ApplicationController
   def hello_world
     language = params[:language] || "cpp"
     render plain: LanguageConfigService.hello_world_for(language)
+  end
+
+  def share
+    snippet = Snippet.create!(
+      source_code: params[:source_code],
+      language: params[:language],
+      compiler_flags: params[:compiler_flags]
+    )
+    render json: { url: "/s/#{snippet.slug}" }
+  end
+
+  def shared
+    snippet = Snippet.find_by!(slug: params[:slug])
+    @source_code = snippet.source_code
+    @language = snippet.language
+    @compiler_flags = snippet.compiler_flags
+    render :index
   end
 end
   # private
