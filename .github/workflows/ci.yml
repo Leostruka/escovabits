@@ -88,3 +88,65 @@ jobs:
           name: screenshots
           path: ${{ github.workspace }}/tmp/screenshots
           if-no-files-found: ignore
+
+  docker_test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build test image
+        run: docker build -f Dockerfile.test -t escovabits-test .
+
+      - name: Run automated tests (unit + system)
+        run: docker run --rm --shm-size=1g escovabits-test bin/rails db:test:prepare test test:system
+
+      - name: Run brakeman scan
+        run: docker run --rm escovabits-test bin/brakeman --no-pager
+
+      - name: Functioning and usability smoke tests
+        run: |
+          docker run -d --name escovabits-smoke -p 3000:3000 \
+            -e RAILS_ENV=development \
+            escovabits-test bash -c "bundle exec rails db:prepare && bundle exec rails server -b 0.0.0.0 -p 3000"
+
+          sleep 10
+
+          set -e
+
+          echo "=== 1. GET / (root) ==="
+          status=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/)
+          echo "status=$status"
+          [ "$status" = "200" ]
+
+          echo "=== 2. GET /hello_world?language=cpp ==="
+          body=$(curl -s http://localhost:3000/hello_world?language=cpp)
+          echo "$body" | head -3
+          echo "$body" | grep -q "Hello, World!"
+
+          echo "=== 3. POST /compile (cpp) ==="
+          token=$(curl -s -c /tmp/cookies http://localhost:3000/ | grep -oP '<meta name="csrf-token" content="\K[^"]+')
+          body=$(curl -s -b /tmp/cookies -X POST http://localhost:3000/compile \
+            -H "X-CSRF-Token: $token" \
+            -d "source_code=int+main(){return+0;}&language=cpp")
+          echo "$body" | head -c 120
+          echo "$body" | grep -q "turbo-stream"
+
+          echo "=== 4. POST /share ==="
+          body=$(curl -s -b /tmp/cookies -X POST http://localhost:3000/share \
+            -H "X-CSRF-Token: $token" \
+            -d "source_code=int+main(){return+0;}&language=cpp&compiler_flags=-O2")
+          echo "$body"
+          echo "$body" | grep -q "/s/"
+
+          echo "=== 5. GET /s/<slug> ==="
+          slug=$(echo "$body" | grep -oP '/s/\K[^"]+')
+          status=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/s/$slug)
+          echo "status=$status"
+          [ "$status" = "200" ]
+
+          echo "=== All smoke tests passed ==="
+
+      - name: Cleanup container
+        if: always()
+        run: docker stop escovabits-smoke 2>/dev/null; docker rm escovabits-smoke 2>/dev/null; true
