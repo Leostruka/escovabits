@@ -45,7 +45,7 @@ export default class extends Controller {
     // Pausa o observer para não detectar a nossa própria mudança de "Compilando..."
     if (this.outputObserver) this.outputObserver.disconnect()
 
-    this.outputTarget.innerHTML = `<pre class="absolute top-0 left-0 h-full p-2 text-right text-gray-500 bg-gray-900 rounded-l-md select-none" data-compiler-target="outputLineNumbers">1</pre><pre class="w-full h-full bg-gray-900 rounded-md font-mono p-2 !pl-12 overflow-auto" data-action="scroll->compiler#syncScroll">Compilando...</pre>`
+    this.outputTarget.innerHTML = `<pre class="absolute top-0 left-0 h-full w-10 p-2 text-right text-zinc-600 bg-black/30 select-none overflow-hidden flex flex-col font-mono text-sm leading-6" data-compiler-target="outputLineNumbers">1</pre><pre class="w-full h-full font-mono text-sm leading-6 p-2 pl-12 overflow-auto text-zinc-500" data-action="scroll->compiler#syncScroll">Compilando...</pre>`
     this.element.requestSubmit()
 
     // Retoma o observer para aguardar a resposta do Turbo Stream
