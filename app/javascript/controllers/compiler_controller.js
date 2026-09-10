@@ -82,7 +82,7 @@ export default class extends Controller {
       formData.append("source_code", this.sourceTarget.value)
       formData.append("language", this.languageSelectTarget.value)
       formData.append("compiler_flags", this.compilerFlagsTarget.value)
-      
+
       const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content
 
       const response = await fetch("/share", {
@@ -116,7 +116,7 @@ export default class extends Controller {
   updateLineNumbers(codeElement, lineNumbersElement) {
     const content = codeElement.tagName === 'TEXTAREA' ? codeElement.value : codeElement.textContent;
     const lineCount = (content.match(/\n/g) || []).length + 1;
-    
+
     if (lineNumbersElement.childElementCount === lineCount) return;
 
     // Usar spans em vez de texto puro com \n melhora o alinhamento e a performance.
