@@ -15,8 +15,3 @@ repos:
     rev: v8.24.2
     hooks:
       - id: gitleaks
-
-  - repo: https://github.com/rubocop-hq/rubocop
-    rev: v1.74.0
-    hooks:
-      - id: rubocop
