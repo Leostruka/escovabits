@@ -43,7 +43,10 @@ services:
       - ./selfsigned.crt:/etc/nginx/ssl/selfsigned.crt:ro
       - ./selfsigned.key:/etc/nginx/ssl/selfsigned.key:ro
     depends_on:
-      - web
+      web:
+        condition: service_healthy
+    command: >
+      sh -c "sleep 5 && nginx -g 'daemon off;'"
     restart: unless-stopped
 
 volumes:
