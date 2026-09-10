@@ -6,7 +6,8 @@ class LanguageConfigService
       extension: ".cpp",
       needs_outfile: false,
       command: ->(user_flags) {
-        default_flags = %w[-fno-ident -fno-verbose-asm -fno-unwind-tables -masm=intel]
+        default_flags = %w[-fno-ident -fno-verbose-asm -fno-unwind-tables]
+        default_flags << "-masm=intel" if RbConfig::CONFIG["host_cpu"] =~ /x86|i\d86|amd64/
         [ "g++", "-S" ] + default_flags + user_flags + [ "%{file}", "-o", "-" ]
       }
     },
