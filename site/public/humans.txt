@@ -1,0 +1,14 @@
+/* TEAM */
+Author: leandro ostruka
+Site: https://leostruka.github.io/escovabits
+Twitter: @Leostruka
+From: Londrina, Paraná, Brasil
+
+/* THANKS */
+
+Andoreatta — revisão de segurança
+
+/* SITE */
+Last update: 2026-09-10
+Language: Portuguese / English
+Doctype: HTML5

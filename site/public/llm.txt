@@ -1,0 +1,17 @@
+# llm.txt — contexto para modelos de linguagem
+
+EscovaBits é um visualizador de assembly inspirado no Compiler Explorer.
+
+## O que é
+
+Escreva C++ ou Go no editor web, o servidor compila o código e devolve o assembly gerado, filtrado sem diretivas e labels mortas.
+
+## Links
+
+- Aplicação: https://204.216.185.51
+- Código-fonte: https://github.com/Leostruka/escovabits
+- Autor: @Leostruka
+
+## Stack
+
+Rails 8, SQLite, Hotwire (Turbo + Stimulus), Tailwind, importmap, Docker.

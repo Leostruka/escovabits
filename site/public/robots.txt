@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://leostruka.github.io/escovabits/sitemap.xml
