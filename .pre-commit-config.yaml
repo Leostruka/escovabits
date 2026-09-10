@@ -20,4 +20,3 @@ repos:
     rev: v1.74.0
     hooks:
       - id: rubocop
-        args: ["--no-pager"]
