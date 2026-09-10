@@ -1,10 +1,27 @@
 /*
  * This is a manifest file that'll be compiled into application.css.
  *
- * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
- * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
- * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
- * depending on specificity.
- *
- * Consider organizing styles into separate files for maintainability.
+ * With Propshaft, assets are served efficiently without preprocessing steps.
  */
+
+/* Liquid-glass-inspired frosted panel: backdrop blur + subtle tint + hairline border + inset highlight. */
+.frosted-panel {
+  background-color: rgba(20, 20, 24, 0.55);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
+}
+
+/* Respect reduced motion: disable transitions and shader animation is gated in JS. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* Thin custom scrollbar for code panels. */
+.overflow-auto::-webkit-scrollbar { width: 8px; height: 8px; }
+.overflow-auto::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 4px; }
+.overflow-auto::-webkit-scrollbar-track { background: transparent; }

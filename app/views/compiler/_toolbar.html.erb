@@ -1,0 +1,38 @@
+<div data-testid="toolbar" class="frosted-panel rounded-xl border border-white/10 p-2 flex flex-wrap items-center gap-2" style="backdrop-filter:none;-webkit-backdrop-filter:none">
+  <%# Hidden native select keeps the compiler-target + change action; custom UI drives it. %>
+  <%= form.select :language, ['cpp', 'go'], { selected: @language },
+        { class: "hidden", name: "language", "aria-label": "Linguagem",
+          data: { action: "change->compiler#changeLanguage", "compiler-target": "languageSelect" } } %>
+
+  <div data-controller="dropdown" class="relative" data-testid="language-dropdown">
+    <button type="button"
+            data-dropdown-target="button"
+            data-action="click->dropdown#toggle"
+            aria-haspopup="listbox" aria-expanded="false"
+            class="flex items-center gap-2 bg-zinc-900 text-zinc-100 rounded-lg px-3 py-1.5 text-sm focus-visible:ring-2 focus-visible:ring-teal-400/70 outline-none">
+      <span data-dropdown-target="label"><%= @language %></span>
+      <svg width="10" height="10" viewBox="0 0 10 10" class="text-zinc-400"><path d="M1 3l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <ul data-dropdown-target="menu" role="listbox" style="display:none"
+        class="absolute z-30 mt-1 min-w-[6rem] bg-zinc-900 rounded-lg border border-white/10 py-1 text-sm text-zinc-100 shadow-lg shadow-black/50">
+      <% ['cpp', 'go'].each do |lang| %>
+        <li role="option" tabindex="0" data-value="<%= lang %>" data-dropdown-target="option"
+            data-action="click->dropdown#choose keydown.enter->dropdown#choose"
+            class="cursor-pointer px-3 py-1.5 hover:bg-white/10 <%= 'text-teal-300' if lang == @language %>"><%= lang %></li>
+      <% end %>
+    </ul>
+  </div>
+
+  <%= form.text_field :compiler_flags, value: @compiler_flags,
+        placeholder: "Flags (ex: -O2)",
+        class: "flex-1 min-w-[12rem] bg-white/5 rounded-lg px-3 py-1.5 text-sm placeholder:text-zinc-500 focus-visible:ring-2 focus-visible:ring-teal-400/70 outline-none",
+        name: "compiler_flags", "aria-label": "Flags de compilação",
+        data: { action: "input->compiler#startDebouncedCompile", "compiler-target": "compilerFlags" } %>
+
+  <button type="button"
+          class="focus-visible:ring-2 focus-visible:ring-teal-400/70 outline-none rounded-lg px-3 py-1.5 text-sm font-medium bg-teal-500/20 hover:bg-teal-500/30 text-teal-200 transition-colors"
+          data-action="click->compiler#shareCode"
+          data-compiler-target="shareButton">
+    Compartilhar
+  </button>
+</div>
