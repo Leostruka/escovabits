@@ -65,7 +65,7 @@ export default function App() {
               Explorer enxuto, com compartilhamento por link.
             </p>
             <div className="hero__cta">
-              <a className="btn" href="#visao">ler a documentação</a>
+              <a className="btn" href="http://204.216.185.51" target="_blank" rel="noreferrer">acessar o projeto</a>
               <a
                 className="btn btn--ghost"
                 href="https://github.com/Andoreatta/escovabits"
@@ -203,14 +203,17 @@ bin/dev      # rails server + tailwind (Procfile.dev)
               lang="bash"
               label="docker"
               code={`docker build -t escovabits .
-docker run -p 3000:80 escovabits`}
+docker run -p 3000:80 escovabits
+
+# ou com docker compose
+cp .env.example .env      # preencha RAILS_MASTER_KEY e SECRET_KEY_BASE
+docker compose up -d --build`}
             />
             <p>
               O <code>Dockerfile</code> instala os compiladores usados
               pelos serviços; <code>Dockerfile.test</code> roda a suíte.
-              Deploy é Kamal (<code>config/deploy.yml</code>):{" "}
-              <code>kamal setup</code> na primeira vez,{" "}
-              <code>kamal deploy</code> nas seguintes.
+              Produção roda com <code>docker compose</code> na OCI Always
+              Free, servindo na porta 80.
             </p>
           </GlassPanel>
         </motion.section>

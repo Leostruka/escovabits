@@ -129,13 +129,20 @@ docker build -t escovabits .
 docker run -p 3000:80 escovabits
 ```
 
+Ou com `docker compose`:
+
+```bash
+cp .env.example .env   # preencha RAILS_MASTER_KEY e SECRET_KEY_BASE
+docker compose up -d --build
+```
+
 O `Dockerfile` instala os compiladores usados pelos serviços. Há também
 `Dockerfile.test` para a suíte.
 
 ### Deploy
 
-Kamal (`config/deploy.yml`): `kamal setup` na primeira vez,
-`kamal deploy` nas seguintes.
+Produção atual roda na OCI Always Free (`204.216.185.51`) com Docker
+Compose, SQLite em volume persistente e Thruster na porta 80.
 
 ## Diagramas
 
