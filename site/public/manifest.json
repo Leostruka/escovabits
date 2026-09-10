@@ -1,0 +1,16 @@
+{
+  "name": "EscovaBits",
+  "short_name": "EscovaBits",
+  "description": "Visualizador de assembly para C++ e Go.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#38bdf8",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

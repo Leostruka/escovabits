@@ -65,7 +65,7 @@ export default function App() {
               Explorer enxuto, com compartilhamento por link.
             </p>
             <div className="hero__cta">
-              <a className="btn" href="http://204.216.185.51" target="_blank" rel="noreferrer">acessar o projeto</a>
+              <a className="btn" href="https://204.216.185.51" target="_blank" rel="noreferrer">acessar o projeto</a>
               <a
                 className="btn btn--ghost"
                 href="https://github.com/Andoreatta/escovabits"
